@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Pengambilan Pelajar — Politeknik Balik Pulau</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+       ============================================================ -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-logo">PBP</div>
+      <div class="navbar-title">
+        <h1>Sistem Dashboard Pengambilan Pelajar</h1>
+        <small>Politeknik Balik Pulau</small>
+      </div>
+    </div>
+    <div class="navbar-tarikh" id="tarikhSekarang"></div>
+  </nav>
+
+  <!-- ============================================================
+       KANDUNGAN UTAMA
+       ============================================================ -->
+  <main class="container">
+
+    <!-- ---- Panel Penapis ---- -->
+    <section class="panel-penapis">
+      <div class="seksyen-tajuk">Penapis Data</div>
+      <div class="penapis-grid">
+        <div>
+          <label for="filterSesi">Sesi Pengambilan</label>
+          <select id="filterSesi"><option value="">Semua Sesi</option></select>
+        </div>
+        <div>
+          <label for="filterProgram">Program</label>
+          <select id="filterProgram"><option value="">Semua Program</option></select>
+        </div>
+        <div>
+          <label for="filterNegeri">Negeri Asal</label>
+          <select id="filterNegeri"><option value="">Semua Negeri</option></select>
+        </div>
+        <div>
+          <label for="filterStatus">Status Permohonan</label>
+          <select id="filterStatus"><option value="">Semua Status</option></select>
+        </div>
+        <div>
+          <label for="filterJantina">Jantina</label>
+          <select id="filterJantina"><option value="">Semua Jantina</option></select>
+        </div>
+      </div>
+      <div class="penapis-tindakan">
+        <button class="btn btn-utama" id="btnGunakanPenapis">Guna Penapis</button>
+        <button class="btn btn-sekunder" id="btnSetSemula">Set Semula</button>
+        <span class="label-penapis" id="labelPenapis"></span>
+      </div>
+    </section>
+
+    <!-- ---- KPI Ringkasan ---- -->
+    <section style="margin-bottom: 1.5rem;">
+      <div class="seksyen-tajuk">Ringkasan Pengambilan</div>
+      <div class="grid-kpi">
+
+        <div class="kad-kpi" style="--warna-aksen: #003087;">
+          <div class="kad-kpi-label">Jumlah Permohonan</div>
+          <div class="kad-kpi-nilai" id="kpiJumlah">—</div>
+          <div class="kad-kpi-sub">Keseluruhan rekod</div>
+        </div>
+
+        <div class="kad-kpi" style="--warna-aksen: #22c55e;">
+          <div class="kad-kpi-label">Diterima</div>
+          <div class="kad-kpi-nilai" id="kpiDiterima">—</div>
+          <div class="kad-kpi-sub">Tawaran dikeluarkan</div>
+        </div>
+
+        <div class="kad-kpi" style="--warna-aksen: #ef4444;">
+          <div class="kad-kpi-label">Ditolak</div>
+          <div class="kad-kpi-nilai" id="kpiDitolak">—</div>
+          <div class="kad-kpi-sub">Tidak memenuhi syarat</div>
+        </div>
+
+        <div class="kad-kpi" style="--warna-aksen: #f59e0b;">
+          <div class="kad-kpi-label">Senarai Tunggu</div>
+          <div class="kad-kpi-nilai" id="kpiTunggu">—</div>
+          <div class="kad-kpi-sub">Menunggu pengesahan</div>
+        </div>
+
+        <div class="kad-kpi" style="--warna-aksen: #94a3b8;">
+          <div class="kad-kpi-label">Belum Daftar</div>
+          <div class="kad-kpi-nilai" id="kpiBelumDaftar">—</div>
+          <div class="kad-kpi-sub">Tawaran belum disahkan</div>
+        </div>
+
+        <div class="kad-kpi" style="--warna-aksen: #3b82f6;">
+          <div class="kad-kpi-label">Pengisian Kuota</div>
+          <div class="kad-kpi-nilai" id="kpiKuota">—</div>
+          <div class="kad-kpi-sub">
+            <div class="kuota-bar-wrapper">
+              <div id="kuotaBar"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ---- Carta Visualisasi ---- -->
+    <section style="margin-bottom: 1.5rem;">
+      <div class="seksyen-tajuk">Visualisasi Data</div>
+      <div class="grid-carta">
+
+        <div class="kad-carta">
+          <h3>Permohonan Mengikut Program</h3>
+          <div class="carta-wrapper">
+            <canvas id="cartaProgram"></canvas>
+          </div>
+        </div>
+
+        <div class="kad-carta">
+          <h3>Pecahan Status Permohonan</h3>
+          <div class="carta-wrapper">
+            <canvas id="cartaStatus"></canvas>
+          </div>
+        </div>
+
+        <div class="kad-carta">
+          <h3>Pelajar Mengikut Negeri Asal</h3>
+          <div class="carta-wrapper" style="height: 300px;">
+            <canvas id="cartaNegeri"></canvas>
+          </div>
+        </div>
+
+        <div class="kad-carta">
+          <h3>Trend Permohonan Mengikut Sesi</h3>
+          <div class="carta-wrapper">
+            <canvas id="cartaTrend"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ---- Jadual Senarai Pelajar ---- -->
+    <section class="seksyen-jadual">
+
+      <div class="bar-tindakan">
+        <h2>Senarai Pelajar</h2>
+        <div class="tindakan-kanan">
+          <input
+            type="text"
+            id="carian"
+            class="input-carian"
+            placeholder="Cari nama pelajar..."
+          />
+          <button class="btn btn-hijau" id="btnEksportExcel">⬇ Eksport Excel</button>
+          <button class="btn btn-merah" id="btnEksportPDF">⬇ Eksport PDF</button>
+          <button class="btn btn-kelabu" id="btnCetak">🖨 Cetak</button>
+        </div>
+      </div>
+
+      <div class="jadual-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Bil</th>
+              <th data-sort="nama">Nama Pelajar <span class="sort-ikon">↕</span></th>
+              <th data-sort="jantina">Jantina <span class="sort-ikon">↕</span></th>
+              <th data-sort="program">Program <span class="sort-ikon">↕</span></th>
+              <th data-sort="negeri">Negeri <span class="sort-ikon">↕</span></th>
+              <th data-sort="status">Status <span class="sort-ikon">↕</span></th>
+              <th data-sort="sesi">Sesi <span class="sort-ikon">↕</span></th>
+              <th data-sort="gred_spm">Gred SPM <span class="sort-ikon">↕</span></th>
+            </tr>
+          </thead>
+          <tbody id="jadualBody">
+            <tr><td colspan="8" style="text-align:center;padding:2rem;color:#94a3b8;">Memuatkan data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="jadual-footer">
+        <span class="info-rekod" id="infoRekod"></span>
+        <div class="pagination" id="pagination"></div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       SKRIP
+       ============================================================ -->
+  <!-- Chart.js v4 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Data & Aplikasi -->
+  <script src="js/data.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Tarikh dalam navbar -->
+  <script>
+    document.getElementById('tarikhSekarang').textContent =
+      new Date().toLocaleDateString('ms-MY', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+  </script>
+
+</body>
+</html>
